@@ -32,7 +32,7 @@ def get_pretrained_network(
 
 def get_pretrained_network_for_CIFAR10(
     model_name:           str, 
-    freeze_hidden_layers: bool = True,
+    freeze_hidden_layers: bool = False,
 ) -> torch.nn.Module:
     """
     Load a pre-trained model and modify it for CIFAR-10 classification.

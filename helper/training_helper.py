@@ -110,8 +110,7 @@ def train_model(
                 # Statistics
                 loss_train += loss.item() * inputs.size(0)
                 num_correct_preds_train += torch.sum(preds == labels.data)
-                scheduler.step()
-            
+            scheduler.step()
             epoch_loss_train = loss_train / dataset_sizes['train']
             epoch_acc_train  = num_correct_preds_train.double() / dataset_sizes['train']
             print(f'TRAINING Loss: {epoch_loss_train:.4f} Acc: {epoch_acc_train:.4f}')
@@ -127,7 +126,7 @@ def train_model(
                 outputs  = model(inputs)
                 _, preds = torch.max(outputs, 1)
                 loss     = loss_fn(outputs, labels)
-                epoch_loss_val += loss.item() * inputs.size(0)
+                loss_val += loss.item() * inputs.size(0)
                 num_correct_preds_val += torch.sum(preds == labels.data)
 
             epoch_loss_val = loss_val / dataset_sizes['val']
