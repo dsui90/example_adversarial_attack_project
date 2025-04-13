@@ -2,10 +2,10 @@ model_target_name: resnet50
 experiment_suffix_target: ''
 model_surrogates:
   mobilenetv2: null  # Pretrained model
-  mobilenetv2_retrained: _blackbox_surrogate
-  resnet50_retrained: _blackbox_surrogate
+  mobilenetv2: _blackbox_surrogate
+  resnet50: _blackbox_surrogate
 attack_methods:
   - fgsm
   - pgd
-eps_range: [0.01, 0.1, 0.01]
+eps_range: [0.01, 0.05, 0.01]
 output_folder: local/evaluation_results/

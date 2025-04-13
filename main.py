@@ -35,6 +35,7 @@ def main(config):
         model_name=config['model_target_name'], 
         experiment_suffix=config['experiment_suffix_target']
     )
+    
     model_surrogates = {
         name: train_model_on_cifar10(model_name=name, experiment_suffix=suffix)
         if suffix else get_pretrained_network(name)
@@ -52,7 +53,7 @@ def main(config):
     for attack_method in config['attack_methods']:
         for surrogate_name, surrogate_model in model_surrogates.items():
             evaluate_model(
-                model_target=model_target,
+                model=model_target,
                 dataloader_test=dataloader_test,
                 model_surrogate=surrogate_model,
                 attack_method=attack_method,

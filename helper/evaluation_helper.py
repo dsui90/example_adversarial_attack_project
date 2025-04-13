@@ -35,6 +35,7 @@ def evaluate_model(
     output_folder_path = Path(output_folder)
     output_folder_path.mkdir(parents=True, exist_ok=True)
     
+    model.to(device)
     model.eval()
     for eps in np.arange(*eps_range):
         print(f"Evaluating with eps: {eps}")
