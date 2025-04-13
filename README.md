@@ -1,4 +1,4 @@
-# example_adversarial_attack_project
+# Adversarial Attack Project
 Exemplary implemenation of the adversarial attacks
 - Fast Gradient Sign Method (FGSM)
 - Projected Gradient Descent (PGD)
