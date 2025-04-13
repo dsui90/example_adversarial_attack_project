@@ -36,11 +36,15 @@ def main(config):
         experiment_suffix=config['experiment_suffix_target']
     )
     
-    model_surrogates = {
-        name: train_model_on_cifar10(model_name=name, experiment_suffix=suffix)
-        if suffix else get_pretrained_network(name)
-        for name, suffix in config['model_surrogates'].items()
-    }
+    model_surrogates = {}
+    for name, suffix in config['model_surrogates'].items():
+        if name is None:
+            model_surrogates['no_surrogate'] = None
+            continue
+        if suffix:
+            model_surrogates[name] = train_model_on_cifar10(model_name=name, experiment_suffix=suffix)
+        else:
+            model_surrogates[name] = train_model_on_cifar10(model_name=name)
 
     model_target.eval()  # Set the target model to evaluation mode
 

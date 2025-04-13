@@ -1,6 +1,7 @@
 model_target_name: resnet50
 experiment_suffix_target: ''
 model_surrogates:
+  null: null  # No surrogate model
   mobilenetv2: null  # Pretrained model
   mobilenetv2: _blackbox_surrogate
   resnet50: _blackbox_surrogate
