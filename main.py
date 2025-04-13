@@ -8,11 +8,10 @@ from models.pretrained_models import get_pretrained_network
 print_cuda_info()
 device = get_device()
 
-# get test dataloader
-model_name = 'resnet50'
-#store_cifar10_data_in_folder(model_name=model_name, folder_path='data/')
 
-#load model
+model_name = 'resnet50'
+
+#load models
 model_target      = train_model_on_cifar10(model_name='resnet50', experiment_suffix='_from_other')
 model_surrogate_0 = get_pretrained_network('mobilenetv2')
 model_surrogate_1 = train_model_on_cifar10(model_name='mobilenetv2', experiment_suffix='_blackbox_surrogate')
