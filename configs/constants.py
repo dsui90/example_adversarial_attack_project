@@ -1,3 +1,9 @@
+"""
+Constants for the training script.
+This file contains constants used in the training process, including
+hyperparameters, normalization values, and available models.
+"""
+
 NORMALIZATION_RGB_MEAN = [0.485, 0.456, 0.406]
 NORMALIZATION_RGB_STD  = [0.229, 0.224, 0.225]
 

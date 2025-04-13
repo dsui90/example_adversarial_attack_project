@@ -23,6 +23,7 @@ class PGD(WhiteBoxBaseClass):
             eps_step: Step size for the attack.
             eps: Maximum perturbation allowed.
             num_iterations: Number of iterations for the attack.
+            device: Device to perform the computation on (CPU or GPU).
         
         Returns:
             Adversarial examples.

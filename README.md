@@ -56,4 +56,24 @@ The project contains the following folders:
 - `local` which contains any cache or local files, which shall not be pushed to the repository.
 - `models` which contains code regarding the used models.
 
+# Literature used
+- Recent survey paper:
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9614158
 
+- FGSM Paper:
+https://arxiv.org/pdf/1412.6572
+
+- PGD paper:
+https://arxiv.org/pdf/1706.06083
+
+- Interesting method, mentioned in the survey paper (not implemented, yet):
+https://openaccess.thecvf.com/content_CVPR_2020/papers/Wu_Boosting_the_Transferability_of_Adversarial_Samples_via_Attention_CVPR_2020_paper.pdf
+
+- Tensorflow tutorial:
+https://www.tensorflow.org/tutorials/generative/adversarial_fgsm
+
+- Blog post:
+https://neptune.ai/blog/adversarial-machine-learning-defense-strategies
+
+- Nice visualization for PGD:
+https://files.sri.inf.ethz.ch/website/teaching/riai2020/materials/lectures/LECTURE3_ATTACKS.pdf

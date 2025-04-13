@@ -18,8 +18,9 @@ def evaluate_model(
     experiment_suffix='',
 ):
     """
-    Evaluate the model on the test set and return the accuracy and loss.
-    Save results in csv file
+    Evaluate the model on the test set.
+    Use the specified attack method to generate adversarial examples and evaluate the model's performance.
+    We use the attack success rate as the evaluation metric.
     """
 
     if model_surrogate is None:

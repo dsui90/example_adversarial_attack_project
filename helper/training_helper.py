@@ -18,7 +18,16 @@ def train_model_on_cifar10(
     cache_path: Union[Path, str] = 'local/cache/',
     load_from_cache: bool = True,
 ):
-
+    """ 
+    Train a model on CIFAR-10 dataset and save the best model.
+    Args:
+        model_name (str): Name of the model to train.
+        experiment_suffix (str): Suffix for the experiment.
+        cache_path (Union[Path, str]): Path to save the model.
+        load_from_cache (bool): Whether to load the model from cache if it exists.
+    Returns:
+        model (torch.nn.Module): The trained model.
+    """
     save_path = Path(cache_path)/f'best_model_{model_name}{experiment_suffix}.pth'
     if save_path.exists() and load_from_cache:
         print(f"Loading model from {save_path}")

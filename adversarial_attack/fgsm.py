@@ -21,7 +21,8 @@ class FGSM(WhiteBoxBaseClass):
             source_img: Input data.
             gt_label: Ground truth labels.
             target_label: Target labels (optional).
-            **kwargs: Additional parameters for the attack.
+            eps: Maximum perturbation allowed.
+            device: Device to perform the computation on (CPU or GPU).
 
         Returns:
             Adversarial examples.

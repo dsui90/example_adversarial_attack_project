@@ -121,8 +121,16 @@ def get_data_transforms(model_name: str):
     }
 
 
-def store_cifar10_data_in_folder(model_name, folder_path = 'local'):
-    # get test dataloader
+def store_cifar10_data_in_folder(
+    model_name: str, 
+    folder_path: str = 'local'
+) -> None:
+    """
+    Store CIFAR-10 test data in a specified folder.
+    Args:
+        model_name (str): Name of the model.
+        folder_path (str): Path to the folder where test data will be stored.
+    """
 
     data_transforms = get_data_transforms(model_name)
     dataloaders     = get_cifar10_dataloaders(data_transforms=data_transforms)
@@ -167,6 +175,7 @@ def unnormalize_img_tensor(
 ) -> torch.Tensor:
     """
     Unnormalize an image tensor using the provided mean and std.
+    This is the inverse of the normalization process applied during preprocessing.
 
     Args:
         image (torch.Tensor): The input image tensor.
@@ -183,7 +192,9 @@ def unnormalize_img_tensor(
     # Unnormalize the image
     return image * std + mean
 
-
+####################
+# Not used for now ...
+####################
 class ImageFolderWithLabels(Dataset):
     """
     Custom Dataset to load images and infer labels from filenames.
