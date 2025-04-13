@@ -13,7 +13,7 @@ class FGSM(WhiteBoxBaseClass):
         super(FGSM, self).__init__(model)
         self.epsilon = epsilon
 
-    def generate(self, source_img, gt_label, target_label=None, eps=0.1):
+    def generate(self, source_img, gt_label, target_label=None, eps=0.1, device='cpu'):
         """
         Generate adversarial examples using FGSM.
 
@@ -34,6 +34,12 @@ class FGSM(WhiteBoxBaseClass):
         if not isinstance(source_img, torch.Tensor):
             raise TypeError("Input image must be a PyTorch tensor.")
         
+        self.model.to(device)
+        source_img = source_img.to(device)
+        gt_label = gt_label.to(device)
+        if target_label is not None:
+            target_label = target_label.to(device)
+            
         self.model.eval()
         source_img.requires_grad = True
         output = self.model(source_img)
@@ -48,7 +54,7 @@ class FGSM(WhiteBoxBaseClass):
         data_grad = source_img.grad.data
         
         # Create the perturbed image by adjusting each pixel of the input image
-        perturbed_image = source_img + eps * data_grad.sign()
+        perturbed_image = source_img - eps * data_grad.sign()
         
         # Clip the perturbed image to ensure pixel values are valid
         perturbed_image = torch.clamp(perturbed_image, 0, 1)

@@ -1,4 +1,3 @@
-
 from pathlib import Path
 from typing import Union
 from configs.constants import AVAILABLE_MODELS, BATCH_SIZE, IMG_INPUT_SIZE, NORMALIZATION_RGB_MEAN, NORMALIZATION_RGB_STD, NUM_WORKERS
@@ -7,6 +6,9 @@ import numpy as np
 import torch
 import torchvision
 from tqdm import tqdm
+from torch.utils.data import Dataset
+from PIL import Image
+import torchvision.transforms as transforms
 
 def get_cifar10_dataloaders(
     data_save_dir:       Union[Path, str]  = 'data',
@@ -114,7 +116,7 @@ def get_data_transforms(model_name: str):
             torchvision.transforms.Compose([
             torchvision.transforms.Resize(IMG_INPUT_SIZE[model_name]),
             torchvision.transforms.ToTensor(),
-            torchvision.transforms.Normalize(NORMALIZATION_RGB_MEAN, NORMALIZATION_RGB_STD)
+            #torchvision.transforms.Normalize(NORMALIZATION_RGB_MEAN, NORMALIZATION_RGB_STD)
         ]),
     }
 
@@ -180,3 +182,55 @@ def unnormalize_img_tensor(
     
     # Unnormalize the image
     return image * std + mean
+
+
+class ImageFolderWithLabels(Dataset):
+    """
+    Custom Dataset to load images and infer labels from filenames.
+
+    Args:
+        folder_path (str): Path to the folder containing images.
+        transform (callable, optional): A function/transform to apply to the images.
+    """
+    def __init__(self, folder_path: str, transform=None):
+        self.folder_path = Path(folder_path)
+        self.image_paths = list(self.folder_path.glob("*.png"))  # Adjust extension if needed
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.image_paths)
+
+    def __getitem__(self, idx):
+        image_path = self.image_paths[idx]
+        image = Image.open(image_path).convert("RGB")
+        
+        # Infer label from filename
+        label = int(image_path.stem.split("_label_")[-1])
+
+        if self.transform:
+            image = self.transform(image)
+
+        return image, label
+
+def dataloader_from_folder_with_labels(folder_path, batch_size, num_workers):
+    """
+    Create a DataLoader from a folder containing images with labels in filenames.
+
+    Args:
+        folder_path (str): Path to the folder containing images.
+        batch_size (int): Batch size for the DataLoader.
+        num_workers (int): Number of workers for the DataLoader.
+
+    Returns:
+        torch.utils.data.DataLoader: DataLoader for the images in the folder.
+    """
+    transform = transforms.Compose([
+        transforms.Resize(IMG_INPUT_SIZE['resnet50']),
+        transforms.ToTensor(),
+        transforms.Normalize(NORMALIZATION_RGB_MEAN, NORMALIZATION_RGB_STD)
+    ])
+
+    dataset = ImageFolderWithLabels(folder_path, transform=transform)
+    dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers)
+
+    return dataloader

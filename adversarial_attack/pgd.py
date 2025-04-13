@@ -12,7 +12,7 @@ class PGD(WhiteBoxBaseClass):
     PGD is an iterative method that perturbs the input data in the direction of the gradient of the loss with respect to the input.
     """
     
-    def generate(self, source_img, gt_label=None, target_label=None, eps_step=0.01, eps=0.1, num_iterations=40):
+    def generate(self, source_img, gt_label, target_label=None, eps=0.1, device='cpu', eps_step=0.01, num_iterations=10):
         """
         Generate adversarial examples using PGD.
         
@@ -37,9 +37,13 @@ class PGD(WhiteBoxBaseClass):
             raise TypeError("Input image must be a PyTorch tensor.")
         
         perturbed_image = source_img.detach().clone()
-    
-        for _ in tqdm(range(num_iterations)):
-            
+        self.model.to(device)
+        source_img = source_img.to(device)
+        gt_label = gt_label.to(device)
+        
+        
+        for _ in range(num_iterations):
+            perturbed_image.to(device)
             perturbed_image.requires_grad = True
             self.model.zero_grad()
             output = self.model(perturbed_image) 
@@ -50,10 +54,10 @@ class PGD(WhiteBoxBaseClass):
             loss.backward()                  
             grad = perturbed_image.grad.detach()
             grad = grad.sign()
-            perturbed_image = perturbed_image + eps_step * grad
+            perturbed_image = perturbed_image - eps_step * grad
 
-        # Projection
-        perturbed_image = source_img + torch.clamp(perturbed_image - source_img, min=-eps, max=eps)
-        perturbed_image = perturbed_image.detach()
-        perturbed_image = torch.clamp(perturbed_image, min=0, max=1)
+            # Projection
+            perturbed_image = source_img + torch.clamp(perturbed_image - source_img, min=-eps, max=eps)
+            perturbed_image = perturbed_image.detach()
+            perturbed_image = torch.clamp(perturbed_image, min=0, max=1)
         return perturbed_image
