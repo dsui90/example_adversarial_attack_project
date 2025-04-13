@@ -1,0 +1,2 @@
+# example_adversarial_attack_project
+Exemplary implemenation of some adversarial attacks
